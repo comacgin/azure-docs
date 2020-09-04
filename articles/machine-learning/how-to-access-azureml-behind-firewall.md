@@ -19,6 +19,22 @@ In this article, learn how to configure Azure Firewall to  control access to you
 
 While the information in this document is based on using [Azure Firewall](../firewall/tutorial-firewall-deploy-portal.md), you should be able to use it with other firewall products. If you have questions about how to allow communication through your firewall, please consult the documentation for the firewall you are using.
 
+## NAT rules
+
+In a forced tunnelling case where all traffic is required to pass through firewall (instead of allowing next step of Internet to remain fully on Azure backbone network), the workspace requires NAT rules to direct traffic to the cluster.
+
+- Protocol: TCP
+- Source IP addresses: all, or optionally BatchNodeManagement and AzureMachineLearningService tags
+- Destination IP address: Firewall IP
+- Destination ports: 
+  - 29876 and 29877 (BatchNodeManagement)
+  - For compute instance, 44224 (AzureMachineLearning)
+  - (optional) For SSH access, 22
+- Translated IP address: Cluster load balancer public IP
+- Translated ports: Identical to destination port per-rule
+
+Azure Firewall does not allow selection of IPs via service tag; the IP ranges for each service can be found in the [Service Tag document](../virtual-network/service-tags-overview.md#service-tags-on-premises).
+
 ## Application rules
 
 On your firewall, create an _application rule_ allowing traffic to and from the addresses in this article.
