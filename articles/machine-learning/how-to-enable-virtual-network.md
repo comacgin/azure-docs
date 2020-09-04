@@ -35,6 +35,10 @@ A __virtual network__ acts as a security boundary, isolating your Azure resource
     - "Microsoft.Network/virtualNetworks/subnet/join/action" on the subnet resource.
 
     For more information on RBAC with networking, see the [Networking built-in roles](/azure/role-based-access-control/built-in-roles#networking)
+    
++ [Resource locks](../azure-resource-manager/management/lock-resources.md) scoped to the subscription or resource group should not exist. Azure Machine Learning must provision network related resources for training cluster or compute instance in a virtual network, but this is blocked by resource locks.
+
++ No Azure Policies scoped to the subscription or resource group should prevent creation of public IP, load balancer, or network security group resources. Azure Machine Learning must provision these network resources for training cluster or compute instance in a virtual network.
 
 ## Private endpoints
 
